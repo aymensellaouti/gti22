@@ -40,9 +40,17 @@ import { TestFormComponent } from './components/test-form/test-form.component';
 import { LoginComponent } from './auth/login/login.component';
 import { TestObservableComponent } from './components/test-observable/test-observable.component';
 import { AddCvComponent } from './cv/add-cv/add-cv.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { TestHttpComponent } from './components/test-http/test-http.component';
 import {AuthentificationInterceptorProvider} from "./auth/interceptors/auth.interceptor";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json'
+  );
+}
+
 
 @NgModule({
   declarations: [
@@ -87,6 +95,16 @@ import {AuthentificationInterceptorProvider} from "./auth/interceptors/auth.inte
         BrowserAnimationsModule, // required animations module
 
         ToastrModule.forRoot(), // ToastrModule added
+
+      TranslateModule.forRoot({
+        defaultLanguage: 'fr',
+        loader:{
+          provide:TranslateLoader,
+          useFactory:HttpLoaderFactory,
+          deps:[HttpClient],
+        },
+      }),
+
 
     ],
   providers: [AuthentificationInterceptorProvider],
